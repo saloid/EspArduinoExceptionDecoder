@@ -1,4 +1,4 @@
-# EspArduinoExceptionDecoder
+# EspArduinoExceptionDecoder - ```>>>stack>>>``` begin fix 
 
 Python Script to decode ESP8266 Exceptions.
 
@@ -6,6 +6,49 @@ Python Script to decode ESP8266 Exceptions.
 ## License
 
 GPL 3.0
+
+## Difference from original project
+If you are getting error ```ERROR: Parser not complete!``` while running original decoder - this is maybe because in your stack trace lines are in another order (I don't know why). So to fix it you can use original project and swap lines, or use this fork, which expects "wrong" lines order.
+
+<details>
+<summary>Right order (works with original project)</summary>
+  
+```
+Exception (3):
+epc1=0x40210070 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4024361b depc=0x00000000
+
+ctx: cont
+sp: 3fff0900 end: 3fff0af0 offset: 01a0
+
+>>>stack>>>
+3fff0aa0:  4024361b 00000000 3ffef4b0 402062e0
+3fff0ab0:  3fffdad0 3ffee7a0 3ffef4b0 4020146b
+3fff0ac0:  00000000 00000000 00000001 40207c7d
+3fff0ad0:  3fffdad0 00000000 3ffef5a0 40207d0c
+3fff0ae0:  feefeffe feefeffe 3ffe8510 401004b5
+<<<stack<<<
+```
+</details>
+
+<details>
+<summary>Wrong order (works with this project)</summary>
+
+```
+Exception (3):
+epc1=0x40210070 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4024361b depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3fff0900 end: 3fff0af0 offset: 01a0
+3fff0aa0:  4024361b 00000000 3ffef4b0 402062e0
+3fff0ab0:  3fffdad0 3ffee7a0 3ffef4b0 4020146b
+3fff0ac0:  00000000 00000000 00000001 40207c7d
+3fff0ad0:  3fffdad0 00000000 3ffef5a0 40207d0c
+3fff0ae0:  feefeffe feefeffe 3ffe8510 401004b5
+<<<stack<<<
+```
+</details>
 
 
 ## Usage:
