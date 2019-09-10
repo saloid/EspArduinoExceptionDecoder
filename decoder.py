@@ -109,6 +109,11 @@ class ExceptionDataParser(object):
             self.depc = match.group("depc")
             return self._parse_ctx
         return self._parse_counters
+		
+    def _parse_stack_begin(self, line):
+        if line == STACK_BEGIN:
+            return self._parse_ctx
+        return self._parse_stack_begin
 
     def _parse_ctx(self, line):
         match = CTX_REGEX.match(line)
@@ -123,13 +128,8 @@ class ExceptionDataParser(object):
             self.sp = match.group("sp")
             self.end = match.group("end")
             self.offset = match.group("offset")
-            return self._parse_stack_begin
-        return self._parse_pointers
-
-    def _parse_stack_begin(self, line):
-        if line == STACK_BEGIN:
             return self._parse_stack_line
-        return self._parse_stack_begin
+        return self._parse_pointers
 
     def _parse_stack_line(self, line):
         if line != STACK_END:
